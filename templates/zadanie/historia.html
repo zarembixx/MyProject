@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Historia Zadań</title>
+</head>
+<body>
+    <h1>Historia zmian dla wybranych zadań</h1>
+    {% for zadanie, zmiany in historie %}
+        <h2>{{ zadanie.nazwa }}</h2>
+        <ul>
+            {% for record, changes in zmiany %}
+                <li>
+                    <strong>Data:</strong> {{ record.history_date }} |
+                    <strong>Użytkownik:</strong> {% if record.history_user %}{{ record.history_user.username }}{% else %}Nieznany{% endif %} |
+                    <strong>Typ zmiany:</strong>
+                    {% if record.history_type == '+' %}
+                        Dodano
+                    {% elif record.history_type == '~' %}
+                        Zmieniono
+                    {% elif record.history_type == '-' %}
+                        Usunięto
+                    {% else %}
+                        Nieznany typ zmiany ({{ record.history_type }})
+                    {% endif %}
+                    {% if changes %}
+                        <div>
+                            <strong>Szczegóły zmian:</strong>
+                            <ul>
+                                {% for change in changes %}
+                                    <li>{{ change.field }}: {{ change.old }} -> {{ change.new }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+    <a href="{% url 'wybierz_zadania' %}">Powrót do wyboru zadań</a>
+</body>
+</html>

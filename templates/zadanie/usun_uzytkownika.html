@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuń Użytkownika</title>
+</head>
+<body>
+    <h1>Czy na pewno chcesz usunąć użytkownika {{ user.username }}?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Tak, usuń użytkownika</button>
+        <a href="{% url 'moje_konto' %}">Anuluj</a>
+    </form>
+</body>
+</html>

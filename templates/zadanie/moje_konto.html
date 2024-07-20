@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Moje Konto</title>
+</head>
+<body>
+    <h1>Moje Konto</h1>
+    <h2>Moje Zadania</h2>
+    <ul>
+        {% for zadanie in zadania %}
+            <li>
+                <strong>ID:</strong> {{ zadanie.id }} |
+                <strong>Nazwa:</strong> {{ zadanie.nazwa }} |
+                <strong>Opis:</strong> {{ zadanie.opis }} |
+                <strong>Status:</strong> {{ zadanie.get_status_display }}
+                {% if can_edit_all_tasks or user == zadanie.przypisany_uzytkownik %}
+                    <a href="{% url 'zadanie_edytuj' zadanie.pk %}">Edytuj</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if wszyscy_uzytkownicy %}
+        <h2>Wszyscy Użytkownicy</h2>
+        <ul>
+            {% for uzytkownik in wszyscy_uzytkownicy %}
+                <li>
+                    {{ uzytkownik.username }}
+                    <form method="post" action="{% url 'usun_uzytkownika' uzytkownik.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Usuń</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h2>Usuń Konto</h2>
+    <form method="post" action="{% url 'usun_konto' %}">
+        {% csrf_token %}
+        <button type="submit">Usuń moje konto</button>
+    </form>
+    <a href="{% url 'home' %}">Powrót do listy zadań</a>
+</body>
+</html>

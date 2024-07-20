@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Wybierz Zadania</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wybierz zadania do wyświetlenia historii lub usunięcia</h1>
+    <form method="post" id="zadania_form">
+        {% csrf_token %}
+        <ul>
+            {% for zadanie in zadania %}
+                <li>
+                    <input type="checkbox" name="zadania" value="{{ zadanie.id }}"> {{ zadanie.nazwa }}
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit" onclick="setFormAction('historia')">Wyświetl historię</button>
+        {% if can_edit_all_tasks %}
+            <button type="submit" onclick="setFormAction('usun')">Usuń wybrane zadania</button>
+        {% endif %}
+    </form>
+    <a href="{% url 'home' %}">Powrót do listy zadań</a>
+
+    <script>
+        function setFormAction(action) {
+            var form = document.getElementById('zadania_form');
+            var selected = [];
+            var checkboxes = document.querySelectorAll('input[name="zadania"]:checked');
+            for (var i = 0; i < checkboxes.length; i++) {
+                selected.push(checkboxes[i].value);
+            }
+            if (selected.length > 0) {
+                if (action === 'historia') {
+                    var url = "{% url 'zadanie_historia' 'dummy' %}".replace('dummy', selected.join(','));
+                    form.action = url;
+                } else if (action === 'usun') {
+                    form.action = "{% url 'usun_zadania' %}";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

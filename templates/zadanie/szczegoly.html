@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Szczegóły Zadania</title>
+</head>
+<body>
+    <h1>{{ zadania.nazwa }}</h1>
+    <p><strong>Opis:</strong> {{ zadania.opis }}</p>
+    <p><strong>Cena:</strong> {{ zadania.status }}</p>
+    <p><strong>Przypisany użytkownik:</strong> {% if zadania.przypisany_uzytkownik %}{{ zadania.przypisany_uzytkownik.username }}{% else %}Jeszcze żaden użytkownik nie jest przypisany do tego zadania{% endif %}</p>
+    <a href="{% url 'home' %}">Powrót do listy zadań</a>
+</body>
+</html>
+
+

@@ -1,0 +1,64 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e1e5eb;
+        }
+        .header a {
+            margin-left: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .header span {
+            margin-right: auto;  /* Wyrównuje tekst do lewej */
+            padding-right: 20px; /* Odstęp od linków */
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        {% if user.is_authenticated %}
+            <span>Zalogowany jako: {{ user.username }} <a href="{% url 'logout' %}">(Wyloguj)</a> <a href="{% url 'moje_konto' %}">Moje Konto</a></span>
+        {% else %}
+            <span>Nie jesteś zalogowany</span>
+            <a href="{% url 'register' %}">Zarejestruj się</a>
+            <a href="{% url 'login' %}">Zaloguj się</a>
+        {% endif %}
+    </div>
+    {% if can_edit_all_tasks %}
+        <a href="{% url 'zadanie_dodaj' %}">Dodaj Nowe Zadanie</a>
+    {% endif %}
+    <a href="{% url 'wybierz_zadania' %}">Wybierz</a>
+    
+    <h1>Filtracja</h1>
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Filtruj</button>
+    </form>
+    <h2>Lista zadań</h2>
+    <ul>
+        {% for zadanie in zadania %}
+            <li>
+                <strong>ID: {{ zadanie.id }} - {{ zadanie.nazwa }}</strong>
+                <a href="{% url 'zadania_szczegoly' zadanie.pk %}">Szczegóły</a>
+                {% if can_edit_all_tasks %}
+                    <a href="{% url 'zadanie_edytuj' zadanie.pk %}">Edytuj</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
