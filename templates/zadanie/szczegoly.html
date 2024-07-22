@@ -7,7 +7,7 @@
 <body>
     <h1>{{ zadania.nazwa }}</h1>
     <p><strong>Opis:</strong> {{ zadania.opis }}</p>
-    <p><strong>Cena:</strong> {{ zadania.status }}</p>
+    <p><strong>Status:</strong> {{ zadania.status }}</p>
     <p><strong>Przypisany użytkownik:</strong> {% if zadania.przypisany_uzytkownik %}{{ zadania.przypisany_uzytkownik.username }}{% else %}Jeszcze żaden użytkownik nie jest przypisany do tego zadania{% endif %}</p>
     <a href="{% url 'home' %}">Powrót do listy zadań</a>
 </body>
